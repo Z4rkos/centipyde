@@ -1,4 +1,7 @@
-def load_wordlist(chunk_size, wordlist_path):
+def load_wordlist(args: dict):
+    wordlist_path: str = args["wordlist"]
+    chunk_size: int = args["chunk_size"]
+
     wordlist = list()
     nested_wordlists = list()
 
@@ -20,5 +23,5 @@ def load_wordlist(chunk_size, wordlist_path):
             f"[-] Wordlist split into {len(nested_wordlists)} lists of size {chunk_size}.")
         return nested_wordlists, preserve_ram
 
-    self.preserve_ram = False
+    preserve_ram = False
     return wordlist, preserve_ram
