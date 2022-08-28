@@ -20,7 +20,7 @@ def load_wordlist(args: dict):
         for i in range(0, len(wordlist), chunk_size):
             nested_wordlists.append(wordlist[i:i+chunk_size])
         print(
-            f"[-] Wordlist split into {len(nested_wordlists)} lists of size {chunk_size}.")
+            f"[-] Wordlist split into {len(nested_wordlists)} lists of size {chunk_size}(ish).")
         return nested_wordlists, preserve_ram
 
     preserve_ram = False

@@ -17,13 +17,14 @@ class RequestHandler:
 
     def __init__(self, args: dict):
 
-        self.url = args["url"]
-        self.fail_string = args["fail_string"]
+        self.url          = args["url"]
+        self.fail_string  = args["fail_string"]
         self.status_codes = args["status_codes"]
-        self.username = args["username"]
-        self.password = args["password"]
-        self.headers = args["headers"]
-        self.cookies = args["cookies"]
+        self.username     = args["username"]
+        self.password     = args["password"]
+        self.headers      = args["headers"]
+        self.cookies      = args["cookies"]
+
 
     def password_handler(self, word: str):
         data = {
@@ -36,6 +37,7 @@ class RequestHandler:
         if self.fail_string not in response.text:
             return f"Password found: {word}"
 
+
     def username_handler(self, word: str):
         data = {
             'username': word,
@@ -47,6 +49,7 @@ class RequestHandler:
         if self.fail_string not in response.text:
             return f"Username found: {word}"
 
+
     def directory_handler(self, word: str):
         url = f"{self.url}/{word}"
         response = requests.get(
@@ -54,3 +57,4 @@ class RequestHandler:
 
         if response.status_code in self.status_codes:
             return f"{response.status_code}: /{word}"
+

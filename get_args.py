@@ -57,7 +57,6 @@ def parse_args():
         help="Path to wordlist.",
         required=True
     )
-
     parser.add_argument(
         "--password",
         help="Password used when enumerating usernames (default = password)",
