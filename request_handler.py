@@ -58,3 +58,25 @@ class RequestHandler:
         if response.status_code in self.status_codes:
             return f"{response.status_code}: /{word}"
 
+
+    def fuzzer(self, word:str):
+        if "FUZZ" in self.url:
+            self.url = self.url.replace("FUZZ", word)
+
+        if self.cookies:
+            try:
+                self.cookies[word] = self.cookies.pop("FUZZ")
+            except KeyError:
+                pass
+            for key, value in self.cookies.items():
+                if value == "FUZZ":
+                    self.cookies[key] = word
+        if self.headers:
+            try:
+                self.headers[word] = self.headers.pop("FUZZ")
+            except KeyError:
+                pass
+            for key, value in self.headers.items():
+                if value == "FUZZ":
+                    self.headers[key] = word
+

@@ -48,6 +48,7 @@ def parse_args():
         "-r",
         "--request_handler",
         help="What type of request_handler to use (username, password, directory)",
+        choices=["username", "password", "directory"],
         required=True
     )
     parser.add_argument(
@@ -64,13 +65,13 @@ def parse_args():
     )
     parser.add_argument(
         "--cookies",
-        help="Cooooookies. Expects dictionary as input.",
+        help="Expects dict as input.",
         default={},
         type=json.loads
     )
     parser.add_argument(
         "--headers",
-        help="Heaaaaaders. Expects dictionary as input.",
+        help="Expects dict as input.",
         default={},
         type=json.loads
     )
@@ -92,7 +93,7 @@ def parse_args():
         parser.add_argument(
             "-f",
             "--fail_string",
-            help="Fail message used when using username or password handeler.",
+            help="Fail message used when using username or password handler.",
             default="",
             required=sys.argv[(sys.argv.index("-r") + 1)] != "directory"
         )
@@ -113,6 +114,8 @@ def parse_args():
     except:
         parser.print_help()
         sys.exit()
+
+
 
     args = parser.parse_args()
     return args
