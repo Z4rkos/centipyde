@@ -1,10 +1,12 @@
+from os import replace
 import requests
+import json
 
 
 class Fuzzer:
 
     def __init__(self, args: dict):
-
+        args = {} if args is None else args
         self.url          = args["url"]
         self.data         = args["data"]
         self.fail_string  = args["fail_string"]
@@ -16,41 +18,27 @@ class Fuzzer:
 
     def fuzz(self, word: str):
         url, data, cookies, headers, mode = self.url, self.data, self.cookies, self.headers, self.mode
+        data = {} if data is None else data
 
-        if "FUZZ" in url:
-            url = url.replace("FUZZ", word)
 
         if cookies:
-            try:
-                cookies[word] = cookies.pop("FUZZ")
-            except KeyError:
-                pass
-            for key, value in cookies.items():
-                if value == "FUZZ":
-                    cookies[key] = word
-
+            cookies = _replace_word(cookies, word)
         if headers:
-            try:
-                headers[word] = headers.pop("FUZZ")
-            except KeyError:
-                pass
-            for key, value in headers.items():
-                if value == "FUZZ":
-                    headers[key] = word
+            headers = _replace_word(headers, word)
 
         if mode == "GET":
+            if "FUZZ" in url:
+                url = url.replace("FUZZ", word)
             response = requests.get(url=url, cookies=cookies, headers=headers)      
 
         elif mode == "POST":
-            try:
-                data[word] = data.pop("FUZZ")
-            except KeyError:
-                pass
-            for key, value in data.items():
-                if value == "FUZZ":
-                    data[key] = word
+            data = _replace_word(data, word)
+            data = json.loads(data)
+            print(data)
+
             response = requests.post(url=url, data=data, cookies=cookies, headers=headers)
-            print(response.text)
+            # print(response.status_code)
+
         if self.status_codes:
             if response.status_code in self.status_codes:
                 return f"{response.status_code}: {word}"
@@ -58,5 +46,18 @@ class Fuzzer:
         if self.fail_string:
             if self.fail_string not in response.text:
                 return f"FOUND: {word}"
+
+
+def _replace_word(some_dictionary, test):
+    dictionary = some_dictionary.copy()
+    try:
+        dictionary[test] = dictionary.pop("FUZZ")
+    except KeyError:
+        pass
+    for key, value in dictionary.items():
+        if value == "FUZZ":
+            dictionary[key] = test
+    
+    return dictionary
 
 
