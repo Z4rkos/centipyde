@@ -1,6 +1,5 @@
 from os import replace
 import requests
-import json
 
 
 class Fuzzer:
@@ -18,8 +17,6 @@ class Fuzzer:
 
     def fuzz(self, word: str):
         url, data, cookies, headers, mode = self.url, self.data, self.cookies, self.headers, self.mode
-        data = {} if data is None else data
-
 
         if cookies:
             cookies = _replace_word(cookies, word)
@@ -33,11 +30,8 @@ class Fuzzer:
 
         elif mode == "POST":
             data = _replace_word(data, word)
-            data = json.loads(data)
-            print(data)
 
             response = requests.post(url=url, data=data, cookies=cookies, headers=headers)
-            # print(response.status_code)
 
         if self.status_codes:
             if response.status_code in self.status_codes:

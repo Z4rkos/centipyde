@@ -7,7 +7,7 @@ from get_args import get_args
 def main():
 
     main_args, wordlist_args, fuzz_args = get_args()
-    print(fuzz_args["mode"])
+
     print("-----------------------------------------------------------------------------")
     wordlist_s, preserve_ram = load_wordlist(wordlist_args)
     print("-----------------------------------------------------------------------------\n")
