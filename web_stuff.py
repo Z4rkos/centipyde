@@ -1,30 +1,24 @@
 from executor import executor
-from request_handler import RequestHandler
+from request_handler import Fuzzer
 from wordlist_loader import load_wordlist
 from get_args import get_args
 
 
 def main():
 
-    main_args, wordlist_args, req_args, handler = get_args()
-
+    main_args, wordlist_args, fuzz_args = get_args()
+    print(fuzz_args["mode"])
     print("-----------------------------------------------------------------------------")
     wordlist_s, preserve_ram = load_wordlist(wordlist_args)
     print("-----------------------------------------------------------------------------\n")
 
-    match handler:
-        case "username":
-            request_handler = RequestHandler(req_args).username_handler
-        case "password":
-            request_handler = RequestHandler(req_args).password_handler
-        case "directory":
-            request_handler = RequestHandler(req_args).directory_handler
+    fuzzer = Fuzzer(fuzz_args).fuzz
 
     if preserve_ram:
         for wordlist in wordlist_s:
-            executor(wordlist, request_handler, main_args)
+            executor(wordlist, fuzzer, main_args)
     else:
-        executor(wordlist_s, request_handler, main_args)
+        executor(wordlist_s, fuzzer, main_args)
  
 
 if __name__ == '__main__':

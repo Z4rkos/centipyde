@@ -10,8 +10,8 @@ def get_args():
     # Just have to do the self.foo shizzle.
     main_arg_list = ["workers"]
     wordlist_arg_list = ["wordlist", "chunk_size"]
-    request_handler_arg_list = [
-        "url", "fail_string", "status_codes", "username", "password", "headers", "cookies"]
+    fuzzer_arg_list = [
+        "url", "fail_string", "status_codes", "data", "headers", "cookies", "mode"]
 
     req_args = {}
     wordlist_args = {}
@@ -25,13 +25,13 @@ def get_args():
             elif arg in wordlist_arg_list:
                 wordlist_args[arg] = opt
 
-            elif arg in request_handler_arg_list:
+            elif arg in fuzzer_arg_list:
                 req_args[arg] = opt
 
             elif arg == "request_handler":
                 handler = opt
 
-    return main_args, wordlist_args, req_args, handler
+    return main_args, wordlist_args, req_args
 
 
 def parse_args():
@@ -45,10 +45,10 @@ def parse_args():
         required=True
     )
     parser.add_argument(
-        "-r",
-        "--request_handler",
-        help="What type of request_handler to use (username, password, directory)",
-        choices=["username", "password", "directory"],
+        "-m",
+        "--mode",
+        help="What type of mode to use (GET, POST)",
+        choices=["GET", "POST"],
         required=True
     )
     parser.add_argument(
@@ -59,15 +59,11 @@ def parse_args():
         required=True
     )
     parser.add_argument(
-        "--password",
-        help="Password used when enumerating usernames (default = password)",
-        default="password"
-    )
-    parser.add_argument(
         "--cookies",
         help="Expects dict as input.",
         default={},
         type=ast.literal_eval
+    )
     parser.add_argument(
         "--headers",
         help="Expects dict as input.",
@@ -78,37 +74,36 @@ def parse_args():
         "--workers",
         help="Amount of workers to use.",
         default=30,
-        type=int)
-
+        type=int
+    )
     parser.add_argument(
         "--chunk_size",
         help="Size of chunk the wordlist should be split into (default = 100000). If len(wordlist) * 2 < chunk size it will not be split.",
         default=100000,
         type=int
     )
-
+    parser.add_argument(
+        "-s",
+        "--status_codes",
+        help="Allowed status codes for directory enumeration. (format: 200 300 303 405 500)",
+        default=[],
+        type=int,
+        nargs='+',
+    )
+    parser.add_argument(
+        "-f",
+        "--fail_string",
+        help="Fail message used when using username or password handler.",
+        default="",
+    )
     try:
         # Conditionally required argumets.
         parser.add_argument(
-            "-f",
-            "--fail_string",
-            help="Fail message used when using username or password handler.",
-            default="",
-            required=sys.argv[(sys.argv.index("-r") + 1)] != "directory"
-        )
-        parser.add_argument(
-            "-s",
-            "--status_codes",
-            help="Allowed status codes for directory enumeration. (format: 200 300 303 405 500)",
-            default=[],
-            type=int,
-            nargs='+',
-        )
-        parser.add_argument(
-            "--username",
-            help="username to use when enumerating passwords (default = username)",
-            default="username",
-            required=sys.argv[(sys.argv.index("-r") + 1)] == "password"
+            "--data",
+            help="Data to use in post request (expects dict as input).",
+            type=ast.literal_eval,
+            default={},
+            required=sys.argv[(sys.argv.index("-m") + 1)] == "POST"
         )
     except:
         parser.print_help()
