@@ -59,24 +59,41 @@ class RequestHandler:
             return f"{response.status_code}: /{word}"
 
 
-    def fuzzer(self, word:str):
-        if "FUZZ" in self.url:
-            self.url = self.url.replace("FUZZ", word)
+    def fuzzer(self, word: str, mode: str):
+        url, cookies, headers = self.url, self.cookies, self.headers
 
-        if self.cookies:
+        if "FUZZ" in url:
+            url = url.replace("FUZZ", word)
+
+        if cookies:
             try:
-                self.cookies[word] = self.cookies.pop("FUZZ")
+                cookies[word] = cookies.pop("FUZZ")
             except KeyError:
                 pass
-            for key, value in self.cookies.items():
+            for key, value in cookies.items():
                 if value == "FUZZ":
-                    self.cookies[key] = word
-        if self.headers:
+                    cookies[key] = word
+
+        if headers:
             try:
-                self.headers[word] = self.headers.pop("FUZZ")
+                headers[word] = headers.pop("FUZZ")
             except KeyError:
                 pass
-            for key, value in self.headers.items():
+            for key, value in headers.items():
                 if value == "FUZZ":
-                    self.headers[key] = word
+                    headers[key] = word
+
+        if mode.upper() == "GET":
+            response = requests.get(url=url, cookies=cookies, headers=headers)      
+        elif mode.upper() == "POST"
+            response = requests.post(url=url, data=data, cookies=cookies, headers=headers)
+
+        if self.status_codes:
+            if response.status_code in self.status_codes:
+                return f"{response.status_code}: {word}"
+
+        if self.fail_string:
+            if self.fail_string not in response.text:
+                return f"{response.status_code}: {word}"
+
 

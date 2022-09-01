@@ -1,5 +1,5 @@
 import argparse
-import json
+import ast
 import sys
 
 
@@ -67,13 +67,12 @@ def parse_args():
         "--cookies",
         help="Expects dict as input.",
         default={},
-        type=json.loads
-    )
+        type=ast.literal_eval
     parser.add_argument(
         "--headers",
         help="Expects dict as input.",
         default={},
-        type=json.loads
+        type=ast.literal_eval
     )
     parser.add_argument(
         "--workers",
@@ -100,8 +99,8 @@ def parse_args():
         parser.add_argument(
             "-s",
             "--status_codes",
-            help="Allowed status codes for directory enumeration.",
-            default=[i for i in range(200, 399)],
+            help="Allowed status codes for directory enumeration. (format: 200 300 303 405 500)",
+            default=[],
             type=int,
             nargs='+',
         )
