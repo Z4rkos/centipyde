@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 import argparse
 import ast
 import sys
@@ -28,10 +29,10 @@ def get_args():
             elif arg in fuzzer_arg_list:
                 req_args[arg] = opt
 
-            elif arg == "request_handler":
-                handler = opt
-
     return main_args, wordlist_args, req_args
+
+@dataclass
+class Args:
 
 
 def parse_args():
@@ -42,14 +43,12 @@ def parse_args():
         "--url",
         help="Target URL.",
         type=str,
-        required=True
     )
     parser.add_argument(
         "-m",
         "--mode",
         help="What type of mode to use (GET, POST)",
         choices=["GET", "POST"],
-        required=True
     )
     parser.add_argument(
         "-w",
@@ -86,7 +85,7 @@ def parse_args():
         "-s",
         "--status_codes",
         help="Allowed status codes for directory enumeration. (format: 200 300 303 405 500)",
-        default=[],
+        default=[200, 300, 303],
         type=int,
         nargs='+',
     )
@@ -109,7 +108,10 @@ def parse_args():
         parser.print_help()
         sys.exit()
 
-
-
     args = parser.parse_args()
     return args
+
+
+
+
+
