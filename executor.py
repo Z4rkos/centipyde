@@ -8,13 +8,13 @@ start_time = time.time()
 tries = 0
 
 
-def executor(wordlist_generator: Iterator[str], request_handler: Callable, args: dict):
+def executor(wordlist_args, request_handler: Callable, args: dict):
     global tries, start_time
     workers = args["workers"]
     wordlist_generator = load_wordlist(wordlist_args)
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
-        future_to_url = (executor.submit(request_handler, word) for word in wordlist_generator())
+        future_to_url = (executor.submit(request_handler, word) for word in wordlist_generator(wordlist_args))
         try:
             for future in concurrent.futures.as_completed(future_to_url):
                 tries_per_sec = int(

@@ -20,6 +20,7 @@ class RequestHandler():
         # print(hasattr(RequestHandler, "url"))
         for dictionary in args:
             for key in dictionary:
+                # print(key, dictionary[key])
                 # if key in dir(self):
                 setattr(self.__class__, key, dictionary[key])
             for key in kwargs:
@@ -37,6 +38,9 @@ class DirectoryEnumerator(RequestHandler):
     Arguments are handeled by the parrent class.
     """
 
+    def __init__(self, *args: dict, **kwargs: any):
+        super().__init__(*args, **kwargs)
+
     def test(self):
         print(self.url, self.wordlist, self.abc)
 
@@ -45,7 +49,9 @@ class DirectoryEnumerator(RequestHandler):
         Runs the DirectoryEnumerator.
         The 'word' argument is passed by the executor from a wordlist.
         """
-        self.url += word
+        print(self.url)
+        self.url =  self.url + word
+        # print(self.url)
         if not self.status_codes:
             self.status_codes = [200, 301, 302, 401, 403]
         response = requests.get(url=self.url, cookies=self.cookies, headers=self.headers)

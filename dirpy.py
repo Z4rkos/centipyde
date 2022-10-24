@@ -8,11 +8,10 @@ def main():
 
     executor_args, wordlist_args, request_handler_args = get_args()
 
-    print("Loading wordlist...")
-    
-    print("Wordlist loaded.")
+    # print("Loading wordlist...")
+    # wordlist_generator = load_wordlist(wordlist_args)
+    # print("Wordlist loaded.")
 
-    request_handler_args = {"url": "test", "wordlist": "stuff", "abc": "shit"}
     mode = "dir"
     # RequestHandler(request_handler_args)
     request_handler = RequestHandlerFactory.get_request_handler(mode)
