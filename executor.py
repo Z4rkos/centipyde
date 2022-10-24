@@ -3,6 +3,7 @@ import concurrent.futures
 import os
 from typing import Callable, Iterator
 
+from wordlist_loader import load_wordlist
 start_time = time.time()
 tries = 0
 
@@ -10,6 +11,7 @@ tries = 0
 def executor(wordlist_generator: Iterator[str], request_handler: Callable, args: dict):
     global tries, start_time
     workers = args["workers"]
+    wordlist_generator = load_wordlist(wordlist_args)
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
         future_to_url = (executor.submit(request_handler, word) for word in wordlist_generator())

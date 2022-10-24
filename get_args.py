@@ -2,37 +2,42 @@ from dataclasses import dataclass
 import argparse
 import ast
 import sys
+from request_handler import REQUEST_HANDLERS
 
 
 def get_args():
     args = parse_args()
 
     # Everything here will be passed to the right classes/functions.
-    # Just have to do the self.foo shizzle.
-    main_arg_list = ["workers"]
-    wordlist_arg_list = ["wordlist", "chunk_size"]
-    fuzzer_arg_list = [
-        "url", "fail_string", "status_codes", "data", "headers", "cookies", "mode"]
 
-    req_args = {}
-    wordlist_args = {}
-    main_args = {}
+    executor_arg_list = ["workers"]
+    wordlist_arg_list = ["wordlist"]
+    request_handler_arg_list = [
+        "url",
+        "fail_string",
+        "status_codes",
+        "data",
+        "headers",
+        "cookies",
+        "mode"
+    ]
+
+    request_handler_args = {}
+    wordlist_loader_args = {}
+    executor_args = {}
     for arg in vars(args):
         opt = getattr(args, arg)
-        if opt != None:
-            if arg in main_arg_list:
-                main_args[arg] = opt
+        if opt is not None:
+            if arg in executor_arg_list:
+                executor_args[arg] = opt
 
             elif arg in wordlist_arg_list:
-                wordlist_args[arg] = opt
+                wordlist_loader_args = opt
 
-            elif arg in fuzzer_arg_list:
-                req_args[arg] = opt
+            elif arg in request_handler_arg_list:
+                request_handler_args[arg] = opt
 
-    return main_args, wordlist_args, req_args
-
-@dataclass
-class Args:
+    return executor_args, wordlist_loader_args, request_handler_args
 
 
 def parse_args():
@@ -47,15 +52,16 @@ def parse_args():
     parser.add_argument(
         "-m",
         "--mode",
-        help="What type of mode to use (GET, POST)",
-        choices=["GET", "POST"],
+        help="What type of mode to use.",
+        choices=REQUEST_HANDLERS.keys(),
+        type=str,
     )
     parser.add_argument(
         "-w",
         "--wordlist",
-        type=str,
         help="Path to wordlist.",
-        required=True
+        required=True,
+        type=str,
     )
     parser.add_argument(
         "--cookies",
@@ -76,37 +82,32 @@ def parse_args():
         type=int
     )
     parser.add_argument(
-        "--chunk_size",
-        help="Size of chunk the wordlist should be split into (default = 100000). If len(wordlist) * 2 < chunk size it will not be split.",
-        default=100000,
-        type=int
-    )
-    parser.add_argument(
         "-s",
         "--status_codes",
         help="Allowed status codes for directory enumeration. (format: 200 300 303 405 500)",
         default=[200, 300, 303],
-        type=int,
         nargs='+',
+        type=int,
     )
     parser.add_argument(
         "-f",
         "--fail_string",
         help="Fail message used when using username or password handler.",
         default="",
+        type=str,
     )
-    try:
-        # Conditionally required argumets.
-        parser.add_argument(
-            "--data",
-            help="Data to use in post request (expects dict as input).",
-            type=ast.literal_eval,
-            default={},
-            required=sys.argv[(sys.argv.index("-m") + 1)] == "POST"
-        )
-    except:
-        parser.print_help()
-        sys.exit()
+    # try:
+    #     # Conditionally required argumets.
+    #     parser.add_argument(
+    #         "--data",
+    #         help="Data to use in post request (expects dict as input).",
+    #         default={},
+    #         required=sys.argv[(sys.argv.index("-m") + 1)] == "POST",
+    #         type=ast.literal_eval,
+    #     )
+    # except:
+    #     parser.print_help()
+    #     sys.exit()
 
     args = parser.parse_args()
     return args
