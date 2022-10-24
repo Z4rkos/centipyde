@@ -8,16 +8,15 @@ def main():
 
     executor_args, wordlist_args, request_handler_args = get_args()
 
-    # print("Loading wordlist...")
-    # wordlist_generator = load_wordlist(wordlist_args)
-    # print("Wordlist loaded.")
+    wordlist_generator = load_wordlist(wordlist_args)
 
+    # Need to implement this propperly in get_args with subparsers.
     mode = "dir"
-    # RequestHandler(request_handler_args)
-    request_handler = RequestHandlerFactory.get_request_handler(mode)
-    request_handler = request_handler(request_handler_args)
 
-    executor(wordlist_args, request_handler.run, executor_args)
+    stuff = RequestHandlerFactory.get_request_handler(mode)
+    request_handler = stuff(request_handler_args).run
+
+    executor(wordlist_generator, request_handler, executor_args)
 
 
 if __name__ == '__main__':

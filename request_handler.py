@@ -1,10 +1,4 @@
-from abc import ABC, abstractmethod
-from concurrent.futures import wait
-from typing import Protocol
 import requests
-from requests import Response
-from dataclasses import dataclass
-
 
 class RequestHandler():
     """
@@ -17,47 +11,46 @@ class RequestHandler():
     # I will need to implement checks in get_args.
 
     def __init__(self, *args: dict, **kwargs: any):
-        # print(hasattr(RequestHandler, "url"))
         for dictionary in args:
             for key in dictionary:
-                # print(key, dictionary[key])
-                # if key in dir(self):
-                setattr(self.__class__, key, dictionary[key])
+                setattr(self, key, dictionary[key])
             for key in kwargs:
-                setattr(self.__class__, key, kwargs[key])
+                setattr(self, key, kwargs[key])
 
 
-    @abstractmethod
-    def run(self, *args) -> Response:
+    def run(self, *args) -> str:
         """The method that starts the request handler"""
 
 
 class DirectoryEnumerator(RequestHandler):
     """
-    Enumerates webpages for directories.
+    Enumerates webpages for directoriesself.
     Arguments are handeled by the parrent class.
     """
 
-    def __init__(self, *args: dict, **kwargs: any):
-        super().__init__(*args, **kwargs)
-
-    def test(self):
-        print(self.url, self.wordlist, self.abc)
-
-    def run(self, word: str):
+    def run(self, word: str) -> str:
         """
         Runs the DirectoryEnumerator.
         The 'word' argument is passed by the executor from a wordlist.
+        Checks the status codes in the response for a match against self.status_codes.
         """
-        print(self.url)
-        self.url =  self.url + word
-        # print(self.url)
+
+        url: str = self.url + word
+
         if not self.status_codes:
+            # This should not be implemented here. Maybe a config file or something?
             self.status_codes = [200, 301, 302, 401, 403]
-        response = requests.get(url=self.url, cookies=self.cookies, headers=self.headers)
+
+        response = requests.get(
+            url=url,
+            cookies=self.cookies,
+            headers=self.headers
+        )
 
         if response.status_code in self.status_codes:
             return f"/{word}: {response.status_code}"
+        else:
+            return ""
 
 
 class Dns:
@@ -72,6 +65,7 @@ REQUEST_HANDLERS = {
 class RequestHandlerFactory:
     """
     Factory for request handlers.
+    Makes it easier to get the right handler without loads of if statements.
     """
 
     def get_request_handler(handler: str) -> RequestHandler:
@@ -82,34 +76,3 @@ class RequestHandlerFactory:
         except KeyError:
             print(f"Unkown mode: {handler}")
             return
-
-
-# class DirectoryEnumeratorFactory(RequestHandlerFactory):
-    
-#     def get_request_handler(self):
-#         pass
-
-    
-# def _replace_word(some_dictionary: dict, word: str) -> dict:
-#     dictionary = some_dictionary.copy()
-#     try:
-#         dictionary[word] = dictionary.pop("FUZZ")
-#     except KeyError:
-#         pass
-#     for key, value in dictionary.items():
-#         if value == "FUZZ":
-#             dictionary[key] = word
-    
-#     return dictionary
-
-
-# def set_args(self, *args: dict, **kwargs):
-#     for dictionary in args:
-#         for key in dictionary:
-#             setattr(self, key, dictionary[key])
-#         for key in kwargs:
-#             setattr(self, key, kwargs[key])
-
-mode = "dir"
-request_handler = RequestHandlerFactory.get_request_handler(mode)
-

@@ -44,16 +44,17 @@ def parse_args():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "-u",
-        "--url",
-        help="Target URL.",
-        type=str,
-    )
-    parser.add_argument(
         "-m",
         "--mode",
         help="What type of mode to use.",
         choices=REQUEST_HANDLERS.keys(),
+        default="dir",
+        type=str,
+    )
+    parser.add_argument(
+        "-u",
+        "--url",
+        help="Target URL.",
         type=str,
     )
     parser.add_argument(
@@ -84,7 +85,7 @@ def parse_args():
     parser.add_argument(
         "-s",
         "--status_codes",
-        help="Allowed status codes for directory enumeration. (format: 200 300 303 405 500)",
+        help="Allowed status codes for directory enumeration. (Format:-s 200 300 303 405 500)",
         default=[200, 300, 303],
         nargs='+',
         type=int,
@@ -92,7 +93,7 @@ def parse_args():
     parser.add_argument(
         "-f",
         "--fail_string",
-        help="Fail message used when using username or password handler.",
+        help="Fail message for matching with response.text",
         default="",
         type=str,
     )
