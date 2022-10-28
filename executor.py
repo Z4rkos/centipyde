@@ -14,7 +14,7 @@ def executor(gen_wordlist: Iterator, request_handler: Callable, args: dict):
     workers = args["workers"]
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
-        future_to_url = (executor.submit(request_handler, word) for word in gen_wordlist())
+        future_to_url = (executor.submit(request_handler.run, word) for word in gen_wordlist())
         try:
             for future in concurrent.futures.as_completed(future_to_url):
                 if tries % 33 == 0:
@@ -29,8 +29,10 @@ def executor(gen_wordlist: Iterator, request_handler: Callable, args: dict):
                 try_checker += 1
                 if data:
                     tries += 1
+                    # All the spaces makes the end="/r" thing above work.
                     print(f"[+] {data}                                    \n")
         except KeyboardInterrupt:
-            # Super sketchy stuff, but it works.
+            # Super sketchy stuff, but it makes it so I only have to do CTRL+c once to cancell.
             pid = os.getpid()
+            # Should really do this with subprocess instead...
             os.kill(pid, 9)

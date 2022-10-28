@@ -1,7 +1,7 @@
 #!/bin/python
 """
-A little program that is ment to simplify the writing of web tools by
-providing a nice way to use threading and to set args.
+A little program that is ment to simplify the process of writing web
+'hacking' tools for me.
 """
 
 from executor import executor
@@ -16,11 +16,9 @@ def main():
 
     wordlist_generator = load_wordlist(wordlist_args)
 
-    # Need to implement this propperly in get_args with subparsers.
-
     stuff = RequestHandlerFactory.get_request_handler(mode)
-    print(stuff)
-    request_handler = stuff(request_handler_args).run
+
+    request_handler = stuff(request_handler_args)
 
     executor(wordlist_generator, request_handler, executor_args)
 
@@ -31,7 +29,7 @@ if __name__ == '__main__':
 
 """
 TODO:
-    Add more modes: 
+    Add more modes:
         Would be nice with some that did alot of predifined things,
         like a 'quick_fuzz' mode that went through cookies, headers, and URL
         and fuzzed them with bad chars or somethingself.
@@ -40,7 +38,24 @@ TODO:
 
     Reformat/rewrite get_args.py:
         Should use subparsers for the different modes. Not sure how they work,
-        so need to figure that out. 
-        Maybe make the subparsers classes or something to limit the need to 
+        so need to figure that out.
+        Maybe make the subparsers classes or something to limit the need to
         rewrite similar parsers by inheriting from them instead.
+
+    Save progress:
+        Could implement it with pickle or something, just have to learn how
+        that works first.
+
+    But all of this into docs or something :P
+
+
+NOTES:
+    There are currently alot of wierd things as I am implementing some things
+    I don't  fully understand, but that is kinda the point. Trying new design
+    patterns and techniques to accomplish some goal.
+
+    The whole factory thing is kiiiiiinda not needed, as I could just do some
+    variant of:
+        request_handler = REQUEST_HANDLERS[mode]
+    However, this seams less flexible, and more importantly, alot less cool ;)
 """

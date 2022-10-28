@@ -19,6 +19,7 @@ class RequestHandler():
                 setattr(self, key, kwargs[key])
 
 
+    # This is from when this was an ABC. I will let it chill her for now though as I do want to do something like that.
     def run(self, *args) -> str:
         """The method that starts the request handler"""
 
