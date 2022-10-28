@@ -19,3 +19,13 @@ I'm also using it to experiment with software design concepts and OOP programmin
 * Save progress:
     Could implement it with pickle or something, just have to learn how
     that works first.
+
+* Make a setup.py:
+    Stuff to put things where they should be (like putting 'dirpy' in /bin/).
+
+* Fix/setup a file structure:
+    * request_handler.py should be seperated into two or three files and be put into their own directory.
+    * A folder for docs.
+    * A folder for tests.
+    * A folder or file for utility functions and classes.
+    
