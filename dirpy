@@ -1,0 +1,46 @@
+#!/bin/python
+"""
+A little program that is ment to simplify the writing of web tools by
+providing a nice way to use threading and to set args.
+"""
+
+from executor import executor
+from request_handler import RequestHandler, RequestHandlerFactory
+from wordlist_loader import load_wordlist
+from get_args import get_args
+
+
+def main():
+
+    mode, executor_args, wordlist_args, request_handler_args = get_args()
+
+    wordlist_generator = load_wordlist(wordlist_args)
+
+    # Need to implement this propperly in get_args with subparsers.
+
+    stuff = RequestHandlerFactory.get_request_handler(mode)
+    print(stuff)
+    request_handler = stuff(request_handler_args).run
+
+    executor(wordlist_generator, request_handler, executor_args)
+
+
+if __name__ == '__main__':
+    main()
+
+
+"""
+TODO:
+    Add more modes: 
+        Would be nice with some that did alot of predifined things,
+        like a 'quick_fuzz' mode that went through cookies, headers, and URL
+        and fuzzed them with bad chars or somethingself.
+        Should write more simple functionality first so modes that use several
+        methods can use them (composition).
+
+    Reformat/rewrite get_args.py:
+        Should use subparsers for the different modes. Not sure how they work,
+        so need to figure that out. 
+        Maybe make the subparsers classes or something to limit the need to 
+        rewrite similar parsers by inheriting from them instead.
+"""

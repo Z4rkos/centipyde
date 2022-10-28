@@ -3,8 +3,9 @@ import requests
 class RequestHandler():
     """
     Base class for request handlers.
-    This allows all request handlers to set arguments the same way, only set the required ones
-    and to take new arguments without having to rewrite anything.
+    This allows all request handlers to set arguments the same way,
+    only set the required ones and to take new arguments without having to
+    rewrite anything.
     """
 
     # Currently it will set anything as args. Not sure if this is a prblem or not, but if I keep it like this
@@ -53,13 +54,33 @@ class DirectoryEnumerator(RequestHandler):
             return ""
 
 
-class Dns:
-    pass
+class SubDomainEnumerator(RequestHandler):
+
+    def run(self, word: str) -> str:
+        """
+        Runs the DirectoryEnumerator.
+        The 'word' argument is passed by the executor from a wordlist.
+        Checks the status codes in the response for a match against self.status_codes.
+        """
+
+        url: str = f"{word}.{self.url}"
+
+        response = requests.get(
+            url=url,
+            cookies=self.cookies,
+            headers=self.headers
+        )
+
+        if response.status_code in self.status_codes:
+            return f"/{word}: {response.status_code}"
+        else:
+            return ""
 
 
+# Should put this in a place for globals and stuffsself.
 REQUEST_HANDLERS = {
     "dir": DirectoryEnumerator,
-    "dns": Dns,
+    "dns": SubDomainEnumerator,
 }
 
 class RequestHandlerFactory:

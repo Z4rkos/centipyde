@@ -3,12 +3,13 @@ import concurrent.futures
 import os
 from typing import Callable, Iterator
 
-from wordlist_loader import load_wordlist
+
 start_time = time.time()
 tries = 0
 try_checker = 0
 
-def executor(gen_wordlist: Iterator[str], request_handler: Callable, args: dict):
+
+def executor(gen_wordlist: Iterator, request_handler: Callable, args: dict):
     global tries, try_checker, start_time
     workers = args["workers"]
 

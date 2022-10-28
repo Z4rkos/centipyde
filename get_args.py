@@ -6,9 +6,10 @@ from request_handler import REQUEST_HANDLERS
 
 
 def get_args():
+    """
+    Puts the args in the right dicts so they end up in the right place.
+    """
     args = parse_args()
-
-    # Everything here will be passed to the right classes/functions.
 
     executor_arg_list = ["workers"]
     wordlist_arg_list = ["wordlist"]
@@ -19,8 +20,9 @@ def get_args():
         "data",
         "headers",
         "cookies",
-        "mode"
     ]
+    # Mode is a string as there will always just be one (atleast as things are atm).
+    mode = ""
 
     request_handler_args = {}
     wordlist_loader_args = {}
@@ -28,7 +30,11 @@ def get_args():
     for arg in vars(args):
         opt = getattr(args, arg)
         if opt is not None:
-            if arg in executor_arg_list:
+
+            if arg == "mode":
+                mode = opt
+
+            elif arg in executor_arg_list:
                 executor_args[arg] = opt
 
             elif arg in wordlist_arg_list:
@@ -37,15 +43,14 @@ def get_args():
             elif arg in request_handler_arg_list:
                 request_handler_args[arg] = opt
 
-    return executor_args, wordlist_loader_args, request_handler_args
+    return mode, executor_args, wordlist_loader_args, request_handler_args
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "-m",
-        "--mode",
+        "mode",
         help="What type of mode to use.",
         choices=REQUEST_HANDLERS.keys(),
         default="dir",
