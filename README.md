@@ -6,7 +6,7 @@ I'm also using it to experiment with software design concepts and OOP programmin
 * Add more modes:
     Would be nice with some that did alot of predifined things,
     like a 'quick_fuzz' mode that went through cookies, headers, and URL
-    and fuzzed them with bad chars or somethingself.
+    and fuzzed them with bad chars or something.
     Should write more simple functionality first so modes that use several
     methods can use them (composition).
    
