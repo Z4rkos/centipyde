@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-
+# Not sure if ABC is the right thing for this, but I want it to have an abstract method as all RequestHandler classes needs a run method.
 class RequestHandler(ABC):
     """
     Base class for request handlers.
@@ -8,8 +8,7 @@ class RequestHandler(ABC):
     only set the required ones and to take new arguments without having to
     rewrite anything.
     """
-    # Currently it will set anything as args. Not sure if this is a prblem or not, but if I keep it like this
-    # I will need to implement checks in get_args.
+    # Currently it will set anything as args. Not sure if this is a prblem or not as the args are limited by get_args.
 
     def __init__(self, *args: dict, **kwargs: any):
         for dictionary in args:
@@ -18,8 +17,6 @@ class RequestHandler(ABC):
             for key in kwargs:
                 setattr(self, key, kwargs[key])
 
-
-    # This is from when this was an ABC. I will let it chill her for now though as I do want to do something like that.
     @abstractmethod
     def run(self, *args) -> str:
         """The method that starts the request handler"""

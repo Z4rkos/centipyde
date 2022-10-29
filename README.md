@@ -1,4 +1,4 @@
-# dirpy
+# centipyde
 A little program that is ment to simplify the process of writing web 'hacking' tools for me.
 I'm also using it to experiment with software design concepts and OOP programming, so some things are a bit funky as I am learning while I am making it.
 
@@ -29,4 +29,8 @@ I'm also using it to experiment with software design concepts and OOP programmin
     Stuff to put things where they should be (like putting 'dirpy' in /bin/).
 
 * Implement a method for checking/probing the host a bit before starting the tools.
+
+* Add tests.
+
+* Add some documentation.
     
