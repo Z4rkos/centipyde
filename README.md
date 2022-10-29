@@ -4,11 +4,12 @@ I'm also using it to experiment with software design concepts and OOP programmin
 
 ## TODO:
 * Add more modes:
-    Would be nice with some that did alot of predifined things,
-    like a 'quick_fuzz' mode that went through cookies, headers, and URL
-    and fuzzed them with bad chars or something.
-    Should write more simple functionality first so modes that use several
-    methods can use them (composition).
+    * Would be nice with some that did alot of predifined things, like a 
+        'quick_fuzz' mode that went through cookies, headers, and URL
+        and fuzzed them with bad chars or something.
+    * Should write more simple functionality first so modes that use several
+        methods can use them (composition).
+    * A recursive mode or setting.
 
 * Make things prettier:
     Add some color to the output and a banner of some kind. Should also include 
@@ -27,9 +28,5 @@ I'm also using it to experiment with software design concepts and OOP programmin
 * Make a setup.py:
     Stuff to put things where they should be (like putting 'dirpy' in /bin/).
 
-* Fix/setup a file structure:
-    * request_handler.py should be seperated into two or three files and be put into their own directory.
-    * A folder for docs.
-    * A folder for tests.
-    * A folder or file for utility functions and classes.
+* Implement a method for checking/probing the host a bit before starting the tools.
     
