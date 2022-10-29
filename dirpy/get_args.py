@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import argparse
 import ast
 import sys
-from request_handler import REQUEST_HANDLERS
+from request_handlers.request_handler_factory import REQUEST_HANDLERS
 
 
 def get_args():

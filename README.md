@@ -9,7 +9,11 @@ I'm also using it to experiment with software design concepts and OOP programmin
     and fuzzed them with bad chars or something.
     Should write more simple functionality first so modes that use several
     methods can use them (composition).
-   
+
+* Make things prettier:
+    Add some color to the output and a banner of some kind. Should also include 
+    information about the current settings. and process.
+
 * Reformat/rewrite get_args.py:
     Should use subparsers for the different modes. Not sure how they work,
     so need to figure that out.

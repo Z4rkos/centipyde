@@ -5,7 +5,7 @@ A little program that is ment to simplify the process of writing web
 """
 
 from executor import executor
-from request_handler import RequestHandlerFactory
+from request_handlers.request_handler_factory import RequestHandlerFactory
 from wordlist_loader import load_wordlist
 from get_args import get_args
 
