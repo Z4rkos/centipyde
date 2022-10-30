@@ -8,9 +8,12 @@ from executor import executor
 from request_handlers.request_handler_factory import RequestHandlerFactory
 from wordlist_loader import load_wordlist
 from get_args import get_args
+from banner import print_banner
 
 
 def main() -> None:
+
+    print_banner()
 
     mode, executor_args, wordlist_args, request_handler_args = get_args()
 
@@ -18,6 +21,7 @@ def main() -> None:
 
     request_handler = RequestHandlerFactory.get_request_handler(mode)
     request_handler = request_handler(request_handler_args)
+    # print(vars(request_handler))
 
     executor(wordlist_generator, request_handler, executor_args)
 

@@ -5,7 +5,8 @@ from typing import Tuple, Dict
 from request_handlers.request_handler_factory import REQUEST_HANDLERS
 
 
-def get_args() -> Tuple[str, Dict[str], Dict[str], Dict[str]]:
+# Several returns are returned as a tuple.
+def get_args() -> Tuple[str, dict, dict, dict]:
     """
     Puts the args in the right dicts so they end up in the right place.
     """

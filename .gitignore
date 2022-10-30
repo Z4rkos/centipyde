@@ -2,3 +2,5 @@ __pycache__/
 .vim
 .git
 wordlists/
+
+notes.wiki
