@@ -1,11 +1,11 @@
-from dataclasses import dataclass
 import argparse
 import ast
-import sys
+from typing import Tuple, Dict
+
 from request_handlers.request_handler_factory import REQUEST_HANDLERS
 
 
-def get_args():
+def get_args() -> Tuple[str, Dict[str], Dict[str], Dict[str]]:
     """
     Puts the args in the right dicts so they end up in the right place.
     """
@@ -46,7 +46,7 @@ def get_args():
     return mode, executor_args, wordlist_loader_args, request_handler_args
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
 
     parser.add_argument(

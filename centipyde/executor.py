@@ -9,7 +9,10 @@ tries = 0
 try_checker = 0
 
 
-def executor(gen_wordlist: Iterator, request_handler: Callable, args: dict):
+def executor(gen_wordlist: Iterator, request_handler: Callable, args: dict) -> None:
+    """
+    Takes cares of execution and timing.
+    """
     global tries, try_checker, start_time
     workers = args["workers"]
 
@@ -19,7 +22,7 @@ def executor(gen_wordlist: Iterator, request_handler: Callable, args: dict):
         try:
             for future in concurrent.futures.as_completed(future_to_url):
                 if tries % 22 == 0:
-                    # Need to reformat, remake, and/or rethink this.
+                    # Need to reformat, remake, and/or rethink this as it is not accurate atm.
                     tries_per_sec = int(
                         tries // (time.time() - start_time))
                     print(f"[+] {try_checker} words tried ({tries_per_sec}/s)", end="\r")
