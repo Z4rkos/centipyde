@@ -26,7 +26,7 @@ I'm also using it to experiment with software design concepts and OOP programmin
     that works first.
 
 * Make a setup.py:
-    Stuff to put things where they should be (like putting 'dirpy' in /bin/).
+    Stuff to put things where they should be (like putting 'centipyde' somewhere in PATH).
 
 * Implement a method for checking/probing the host a bit before starting the tools.
 
