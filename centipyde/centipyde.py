@@ -13,9 +13,9 @@ from banner import print_banner
 
 def main() -> None:
 
-    print_banner()
-
     mode, executor_args, wordlist_args, request_handler_args = get_args()
+
+    print_banner(mode, executor_args, wordlist_args, request_handler_args)
 
     wordlist_generator = load_wordlist(wordlist_args)
 
