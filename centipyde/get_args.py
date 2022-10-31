@@ -44,6 +44,14 @@ def get_args() -> Tuple[str, dict, dict, dict]:
             elif arg in request_handler_arg_list:
                 request_handler_args[arg] = opt
 
+    # this needs to be reworked
+    if mode == "dir":
+        try:
+            request_handler_args["status_codes"]
+        except KeyError:
+            request_handler_args["status_codes"] = [404]
+            
+
     return mode, executor_args, wordlist_loader_args, request_handler_args
 
 
@@ -61,6 +69,7 @@ def parse_args() -> argparse.Namespace:
         "-u",
         "--url",
         help="Target URL.",
+        required=True,
         type=str,
     )
     parser.add_argument(
@@ -91,8 +100,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "-s",
         "--status_codes",
-        help="Allowed status codes for directory enumeration. (Format:-s 200 300 303 405 500)",
-        default=[200, 300, 303],
+        help="Disallowed status codes for directory enumeration. (Format:-s 200 300 303 405 500)",
         nargs='+',
         type=int,
     )

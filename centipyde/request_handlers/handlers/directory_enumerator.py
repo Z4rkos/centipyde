@@ -26,7 +26,7 @@ class DirectoryEnumerator(RequestHandler):
             headers=self.headers
         )
 
-        if response.status_code in self.status_codes:
+        if response.status_code not in self.status_codes:
             return f"/{word}: {response.status_code}"
         else:
             return ""

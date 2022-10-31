@@ -11,6 +11,9 @@ I'm also using it to experiment with software design concepts and OOP programmin
         methods can use them (composition).
     * A recursive mode or setting.
 
+* Add more options:
+    Should really have the option of using things like SSL, proxies, etc...
+
 * Make things prettier:
     Add some color to the output and a banner of some kind. Should also include 
     information about the current settings. and process.
@@ -34,3 +37,5 @@ I'm also using it to experiment with software design concepts and OOP programmin
 
 * Add some documentation.
     
+* Maybe make a GUI mode?
+    Would be really cool, but would have to be after everything else is pretty much done.
