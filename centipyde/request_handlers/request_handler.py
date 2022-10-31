@@ -8,8 +8,8 @@ class RequestHandler(ABC):
     only set the required ones and to take new arguments without having to
     rewrite anything.
     """
-    # Currently it will set anything as args. Not sure if this is a prblem or not as the args are limited by get_args.
 
+    # Currently it will set anything as args. Not sure if this is a prblem or not as the args are limited by get_args.
     def __init__(self, *args: dict, **kwargs: any):
         for dictionary in args:
             for key in dictionary:

@@ -1,4 +1,3 @@
-#!/bin/python
 """
 A little program that is ment to simplify the process of writing web
 'hacking' tools for me.
@@ -17,13 +16,13 @@ def main() -> None:
 
     print_banner(mode, executor_args, wordlist_args, request_handler_args)
 
-    wordlist_generator = load_wordlist(wordlist_args)
+    gen_wordlist = load_wordlist(wordlist_args)
 
     request_handler = RequestHandlerFactory.get_request_handler(mode)
     request_handler = request_handler(request_handler_args)
     # print(vars(request_handler))
 
-    executor(wordlist_generator, request_handler, executor_args)
+    executor(gen_wordlist, request_handler, executor_args)
 
 
 if __name__ == '__main__':

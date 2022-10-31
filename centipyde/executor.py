@@ -21,7 +21,6 @@ def executor(gen_wordlist: Iterator, request_handler: Callable, args: dict) -> N
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
         future_to_url = (executor.submit(request_handler.run, word) for word in gen_wordlist())
-        # print(request_handler)
         try:
             for future in concurrent.futures.as_completed(future_to_url):
                 if tries % 22 == 0:
@@ -42,5 +41,5 @@ def executor(gen_wordlist: Iterator, request_handler: Callable, args: dict) -> N
         except KeyboardInterrupt:
             # Super sketchy stuff, but it makes it so I only have to do CTRL+c once to cancell.
             pid = os.getpid()
-            # Should really do this with subprocess instead...
+            # Should do this with subprocess instead...
             os.kill(pid, 9)

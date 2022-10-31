@@ -1,6 +1,7 @@
 import argparse
+import sys
 import ast
-from typing import Tuple, Dict
+from typing import Tuple
 
 from request_handlers.request_handler_factory import REQUEST_HANDLERS
 
