@@ -22,6 +22,7 @@ def get_args() -> Tuple[str, dict, dict, dict]:
         "data",
         "headers",
         "cookies",
+        "data",
     ]
     # Mode is a string as there will always just be one (atleast as things are atm).
     mode = ""
@@ -52,78 +53,80 @@ def get_args() -> Tuple[str, dict, dict, dict]:
         except KeyError:
             request_handler_args["status_codes"] = [404]
             
-
+    print(request_handler_args)
     return mode, executor_args, wordlist_loader_args, request_handler_args
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        "mode",
-        help="What type of mode to use.",
-        choices=REQUEST_HANDLERS.keys(),
-        default="dir",
-        type=str,
-    )
-    parser.add_argument(
+    parser = argparse.ArgumentParser()
+    parent_parser = argparse.ArgumentParser(add_help=False)
+    subparsers = parser.add_subparsers(dest="mode")
+
+    # parser.add_argument(
+    #     "mode",
+    #     help="What type of mode to use.",
+    #     choices=REQUEST_HANDLERS.keys(),
+    #     default="dir",
+    #     type=str,
+    # )
+
+    parent_parser.add_argument(
         "-u",
         "--url",
         help="Target URL.",
         required=True,
         type=str,
     )
-    parser.add_argument(
+    parent_parser.add_argument(
         "-w",
         "--wordlist",
         help="Path to wordlist.",
         required=True,
         type=str,
     )
-    parser.add_argument(
+    parent_parser.add_argument(
         "--cookies",
         help="Expects dict as input.",
         default={},
         type=ast.literal_eval
     )
-    parser.add_argument(
+    parent_parser.add_argument(
         "--headers",
         help="Expects dict as input.",
         default={},
         type=ast.literal_eval
     )
-    parser.add_argument(
+    parent_parser.add_argument(
         "--workers",
         help="Amount of workers to use.",
         default=30,
         type=int
     )
-    parser.add_argument(
+    parent_parser.add_argument(
         "-s",
         "--status_codes",
         help="Disallowed status codes for directory enumeration. (Format:-s 200 300 303 405 500)",
         nargs='+',
         type=int,
     )
-    parser.add_argument(
+    parent_parser.add_argument(
         "-f",
         "--fail_string",
         help="Fail message for matching with response.text",
         default="",
         type=str,
     )
-    # try:
-    #     # Conditionally required argumets.
-    #     parser.add_argument(
-    #         "--data",
-    #         help="Data to use in post request (expects dict as input).",
-    #         default={},
-    #         required=sys.argv[(sys.argv.index("-m") + 1)] == "POST",
-    #         type=ast.literal_eval,
-    #     )
-    # except:
-    #     parser.print_help()
-    #     sys.exit()
+   
+    # This feels a bit dirty, but meh
+    for handler in REQUEST_HANDLERS.keys():
+        handler = subparsers.add_parser(handler, parents=[parent_parser])
+
+    # Experiment. The idea is that this will be the way to add args specific to a mode.
+    # Now that I think about it this kinda defeats the point of the way I set arguments I think.
+    # I dunno man, will have to think about this when I have a functioning brain.
+    post = subparsers.add_parser('post', parents=[parent_parser])
+    post.add_argument("-d", "--data", required=True)
 
     args = parser.parse_args()
     return args
