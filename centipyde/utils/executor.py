@@ -1,4 +1,4 @@
-import time
+import datetime
 import concurrent.futures
 import os
 from typing import Callable, Iterator
@@ -6,38 +6,42 @@ from typing import Callable, Iterator
 from termcolor import colored
 
 
-start_time = time.time()
-tries = 0
-try_checker = 0
-
-
 def executor(gen_wordlist: Iterator, request_handler: Callable, args: dict) -> None:
     """
     Takes cares of execution and timing.
     """
-    global tries, try_checker, start_time
+    current_tries = 0
+    update_time = 0.2
+    total_tries = 0
+
     workers = args["workers"]
     start_thing = colored('[+]', 'blue')
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
         future_to_url = (executor.submit(request_handler.run, word) for word in gen_wordlist())
+
+        next_time = datetime.datetime.now()
+        delta = datetime.timedelta(seconds=update_time)
+
         try:
             for future in concurrent.futures.as_completed(future_to_url):
-                if tries % 22 == 0:
-                    # Need to reformat, remake, and/or rethink this as it is not accurate atm.
-                    tries_per_sec = int(
-                        tries // (time.time() - start_time))
-                    print(f"{start_thing} {try_checker} words tried ({tries_per_sec}/s)", end="\r")
-                    start_time = time.time()
-                    tries = 0
+                period = datetime.datetime.now()
+
+                if period >= next_time:
+                    # print(period)
+                    next_time += delta
+                    # print(tries)
+                    tries_per_sec = current_tries
+                    current_tries = 0
+                    print(f"{start_thing} {total_tries} words tried ({tries_per_sec * 5}/s)", end="\r")
+
                 data = future.result()
-                tries += 1
-                try_checker += 1
+                total_tries += 1
                 if data:
-                    tries += 1
                     # All the spaces makes the end="/r" thing above work.
                     data = colored(data, 'green')
                     print(f"{start_thing} {data}                                    ")
+                current_tries += 1
         except KeyboardInterrupt:
             # Super sketchy stuff, but it makes it so I only have to do CTRL+c once to cancell.
             pid = os.getpid()
