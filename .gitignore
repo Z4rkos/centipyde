@@ -1,6 +1,5 @@
 __pycache__/
 .vim
-.git
-wordlists/
+centipyde/wordlists/
+centipyde/.dccache
 
-notes.wiki
