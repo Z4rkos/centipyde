@@ -1,6 +1,6 @@
 import argparse
-import sys
 import ast
+from re import subn
 from typing import Tuple
 
 from request_handlers.request_handler_factory import REQUEST_HANDLERS
@@ -23,10 +23,10 @@ def get_args() -> Tuple[str, dict, dict, dict]:
         "headers",
         "cookies",
         "data",
+        "test"
     ]
-    # Mode is a string as there will always just be one (atleast as things are atm).
-    mode = ""
 
+    mode = ""
     request_handler_args = {}
     wordlist_loader_args = {}
     executor_args = {}
@@ -41,7 +41,7 @@ def get_args() -> Tuple[str, dict, dict, dict]:
                 executor_args[arg] = opt
 
             elif arg in wordlist_arg_list:
-                wordlist_loader_args = opt
+                wordlist_loader_args[arg] = opt
 
             elif arg in request_handler_arg_list:
                 request_handler_args[arg] = opt
@@ -53,7 +53,6 @@ def get_args() -> Tuple[str, dict, dict, dict]:
         except KeyError:
             request_handler_args["status_codes"] = [404]
             
-    print(request_handler_args)
     return mode, executor_args, wordlist_loader_args, request_handler_args
 
 
@@ -62,14 +61,6 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parent_parser = argparse.ArgumentParser(add_help=False)
     subparsers = parser.add_subparsers(dest="mode")
-
-    # parser.add_argument(
-    #     "mode",
-    #     help="What type of mode to use.",
-    #     choices=REQUEST_HANDLERS.keys(),
-    #     default="dir",
-    #     type=str,
-    # )
 
     parent_parser.add_argument(
         "-u",
@@ -108,6 +99,7 @@ def parse_args() -> argparse.Namespace:
         "--status_codes",
         help="Disallowed status codes for directory enumeration. (Format:-s 200 300 303 405 500)",
         nargs='+',
+        default=[404],
         type=int,
     )
     parent_parser.add_argument(
@@ -117,21 +109,12 @@ def parse_args() -> argparse.Namespace:
         default="",
         type=str,
     )
-   
-    # This feels a bit dirty, but meh
+
+    # Allows handlers to be used with the parent parser args.
     for handler in REQUEST_HANDLERS.keys():
         handler = subparsers.add_parser(handler, parents=[parent_parser])
 
-    # Experiment. The idea is that this will be the way to add args specific to a mode.
-    # Now that I think about it this kinda defeats the point of the way I set arguments I think.
-    # I dunno man, will have to think about this when I have a functioning brain.
-    post = subparsers.add_parser('post', parents=[parent_parser])
-    post.add_argument("-d", "--data", required=True)
+    # Add subparser or subparser args here if needed.
 
     args = parser.parse_args()
     return args
-
-
-
-
-

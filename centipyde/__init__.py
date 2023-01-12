@@ -1,4 +1,3 @@
-# import sys
-# import os
-
-# sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+__name__ = "Centipyde"
+__version__ = "0.3"
+__author__ = "Sokrates Hillestad"

@@ -15,9 +15,6 @@ class DirectoryEnumerator(RequestHandler):
         Checks the status codes in the response for a match against self.status_codes.
         """
         
-        # if self.url.endswith("/"):
-        #     url: str = self.url + word
-        # else:
         url: str = f"{self.url}/{word}"
 
         response = requests.get(
@@ -29,4 +26,4 @@ class DirectoryEnumerator(RequestHandler):
         if response.status_code not in self.status_codes:
             return f"/{word}: {response.status_code}"
         else:
-            return ""
+            return
