@@ -10,6 +10,7 @@ def executor(gen_wordlist: Iterator, request_handler: Callable, args: dict) -> N
     """
     Takes cares of execution and timing.
     """
+
     current_tries = 0
     update_time = 0.2
     total_tries = 0

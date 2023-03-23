@@ -1,10 +1,11 @@
-from .handlers import subdomain_enumerator, directory_enumerator
+from .handlers import subdomain_enumerator, directory_enumerator, password_brute
 from .request_handler import RequestHandler
 
-# Should put this in a place for globals and stuffsself.
+# Should put this in a place for globals and stuff.
 REQUEST_HANDLERS = {
     "dir": directory_enumerator.DirectoryEnumerator,
     "dns": subdomain_enumerator.SubDomainEnumerator,
+    "pwd": password_brute.WpPasswordBruteForce
 }
 
 
@@ -15,7 +16,7 @@ class RequestHandlerFactory:
     """
 
     def get_request_handler(handler: str) -> RequestHandler:
-        """Returns a request handler object."""
+        """Returns a request handler class."""
         try:
             if handler in REQUEST_HANDLERS:
                 return REQUEST_HANDLERS[handler]

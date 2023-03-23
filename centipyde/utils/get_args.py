@@ -22,7 +22,6 @@ def get_args() -> Tuple[str, dict, dict, dict]:
         "data",
         "headers",
         "cookies",
-        "data",
         "test"
     ]
 
@@ -73,7 +72,6 @@ def parse_args() -> argparse.Namespace:
         "-w",
         "--wordlist",
         help="Path to wordlist.",
-        required=True,
         type=str,
     )
     parent_parser.add_argument(
@@ -109,6 +107,11 @@ def parse_args() -> argparse.Namespace:
         default="",
         type=str,
     )
+    parent_parser.add_argument(
+        "-p",
+        "--password",
+        type=list
+        )
 
     # Allows handlers to be used with the parent parser args.
     for handler in REQUEST_HANDLERS.keys():

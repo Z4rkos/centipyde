@@ -1,6 +1,8 @@
+#!/usr/bin/env python
+
 """
 A little program that is ment to simplify the process of writing web
-'enumeration' tools for me.
+enumeration tools for me.
 """
 
 from utils.check_host import host_is_up

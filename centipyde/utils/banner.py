@@ -36,6 +36,8 @@ def print_banner(mode: str, executor_args: dict, wordlist_args: dict, request_ha
             print_banner_item("Status Codes", request_handler_args["status_codes"])
         case "post":
             print_banner_item("Fail String", request_handler_args["fail_string"])
+        case "pwd":
+            print_banner_item("Fail String", request_handler_args["fail_string"])
 
     print(line)
     print()
