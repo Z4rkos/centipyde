@@ -27,15 +27,15 @@ def print_banner(mode: str, executor_args: dict, wordlist_args: dict, request_ha
     print_banner_item("Wordlist", wordlist_args["wordlist"])
     print_banner_item("Workers", executor_args["workers"])
 
-
+    test = "asdasd"
     # Conditional banner items
     match mode:
         case "dir":
             print_banner_item("Status Codes", request_handler_args["status_codes"])
         case "dns":
             print_banner_item("Status Codes", request_handler_args["status_codes"])
-        case "post":
-            print_banner_item("Fail String", request_handler_args["fail_string"])
+        # case "post": 
+        #     print_banner_item("Fail String", request_handler_args["fail_string"])
         case "pwd":
             print_banner_item("Fail String", request_handler_args["fail_string"])
 

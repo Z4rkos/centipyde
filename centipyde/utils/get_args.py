@@ -3,7 +3,7 @@ import ast
 from re import subn
 from typing import Tuple
 
-from request_handlers.request_handler_factory import REQUEST_HANDLERS
+from ..request_handlers.request_handler_factory import REQUEST_HANDLERS
 
 
 # Several returns are returned as a tuple.
@@ -59,7 +59,7 @@ def parse_args() -> argparse.Namespace:
 
     parser = argparse.ArgumentParser()
     parent_parser = argparse.ArgumentParser(add_help=False)
-    subparsers = parser.add_subparsers(dest="mode")
+    subparsers = parser.add_subparsers(dest="mode", required=True)
 
     parent_parser.add_argument(
         "-u",
@@ -72,6 +72,7 @@ def parse_args() -> argparse.Namespace:
         "-w",
         "--wordlist",
         help="Path to wordlist.",
+        required=True,
         type=str,
     )
     parent_parser.add_argument(

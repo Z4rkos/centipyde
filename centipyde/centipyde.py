@@ -5,12 +5,13 @@ A little program that is ment to simplify the process of writing web
 enumeration tools for me.
 """
 
-from utils.check_host import host_is_up
-from utils.executor import executor
-from utils.wordlist_loader import load_wordlist
-from utils.get_args import get_args
-from utils.banner import print_banner
-from request_handlers.request_handler_factory import RequestHandlerFactory
+import test
+from .utils.check_host import host_is_up
+from .utils.executor import executor
+from .utils.wordlist_loader import load_wordlist
+from .utils.get_args import get_args
+from .utils.banner import print_banner
+from .request_handlers.request_handler_factory import RequestHandlerFactory
 
 
 def main() -> None:

@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "centipyde"
+version = "0.4"
+description = "Experimental program I made to learn about web enumeration, concurrent python, and programming patterns."
+authors = ["Z4"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+termcolor = "^2.2.0"
+requests = "^2.28.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+centipyde = "centipyde.centipyde:main"
