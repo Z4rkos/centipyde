@@ -2,6 +2,7 @@ __pycache__/
 .vim
 .envrc
 .direnv
+dist
 centipyde/wordlists/
 centipyde/.dccache
 result

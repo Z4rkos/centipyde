@@ -15,12 +15,7 @@ I'm also using it to experiment with software design concepts and OOP programmin
 * Save progress:
     * Could implement it with pickle.
 
-* Make a setup.py:
-    * Stuff to put things where they should be (like putting 'centipyde' somewhere in PATH).
-
-* Add tests.
-
-* Add some documentation.
-    
 * Maybe make a GUI mode?
     * Would be really cool, but would have to be after everything else is pretty much done.
+
+NOTE: The pwd mode is just there because I needed it for a THM room.
